@@ -1,6 +1,6 @@
 <?php
 session_start();
-class database
+class koneksi
 {
 
 	private $host = "localhost";
@@ -24,4 +24,4 @@ class database
 	}
 }
 
-$conn = new database();
+$conn = new koneksi();
