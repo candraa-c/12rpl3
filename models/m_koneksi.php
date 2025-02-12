@@ -14,7 +14,7 @@ class Koneksi
         $this->koneksi = new mysqli($this->host, $this->uname, $this->pass, $this->db);
 
         if ($this->koneksi->connect_error) {
-            die("Koneksi database MySQL dan PHP GAGAL: " . $this->koneksi->connect_error);
+            return $this->koneksi;
         }
     }
 

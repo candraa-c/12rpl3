@@ -1,19 +1,23 @@
 <?php
+    // Menyertakan file koneksi ke database
     include '../models/m_koneksi.php';
 
+    // Query untuk mengambil data dari tabel anggota_polisi
     $sql = "SELECT id_polisi, nama_polisi, nrp, pangkat, id_satuan, tanggal_lahir, jk FROM anggota_polisi";
-$result = $conn->query($sql);
+    // Menjalankan query
+    $result = $conn->query($sql);
 
-if (!$result) {
-    die("Query Error: " . $conn->error);
-}
-
+    // Mengecek apakah query berhasil dijalankan atau tidak
+    if (!$result) {
+        die("Query Error: " . $conn->error);  // Jika gagal, tampilkan error
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Menyertakan CSS Bootstrap untuk tampilan yang lebih rapi -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Document</title>
 </head>
@@ -30,7 +34,7 @@ if (!$result) {
           <a class="nav-link active" aria-current="page" href="#">User</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Tambah anggota</a>
+          <a class="nav-link" href="v_tambah.php">Tambah anggota</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" aria-disabled="true">Latihan</a>
@@ -60,34 +64,36 @@ if (!$result) {
            </tr>
        </thead>
        <tbody>
-           <?php if ($result->num_rows > 0): ?>
-               <?php $no = 1; while ($row = $result->fetch_assoc()): ?>
-                   <tr>
-                       <td><?= $no++; ?></td>
-                       <td><?= $row['nama_polisi']; ?></td>
-                       <td><?= $row['nrp']; ?></td>
-                       <td><?= htmlspecialchars($row['pangkat']); ?></td>
-                       <td><?= htmlspecialchars($row['id_satuan']); ?></td>
-                       <td><?= htmlspecialchars($row['tanggal_lahir']); ?></td>
-                       <td><?= htmlspecialchars($row['jk']); ?></td>
-                       <td>
-                           <a href="edit.php?id=<?= $row['id_polisi']; ?>" class="btn btn-primary btn-sm">Edit</a>
-                           <a href="delete.php?id=<?= $row['id_polisi']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?');">Hapus</a>
-                       </td>
-                   </tr>
-               <?php endwhile; ?>
-           <?php else: ?>
-               <tr><td colspan="6" class="text-center">Tidak ada data</td></tr>
-           <?php endif; ?>
+       <?php
+            $no = 1;  // Menambahkan nomor urut untuk setiap anggota
+            // Melakukan perulangan untuk menampilkan setiap baris data yang diambil dari query
+            while ($data = $result->fetch_assoc()) :
+                // Format tanggal lahir menjadi format yang lebih mudah dibaca
+                $formatted_date = date("d F Y", strtotime($data['tanggal_lahir']));
+        ?>
+            <tr>
+                <!-- Menampilkan nomor urut -->
+                <th scope="row"><?= $no++ ?></th>
+                <!-- Menampilkan data anggota lainnya -->
+                <td><?= $data['nama_polisi'] ?></td>
+                <td><?= $data['nrp'] ?></td>
+                <td><?= $data['pangkat'] ?></td>
+                <td><?= $data['id_satuan'] ?></td>
+                <td><?= $formatted_date ?></td>
+                <td><?= $data['jk'] ?></td>
+                <td>
+                    <center>
+                        <!-- Tombol untuk mengedit data anggota -->
+                        <a href="v_edit.php?id=<?= $data['id_polisi'] ?>"><button type="button" class="btn btn-round btn-primary">Edit</button></a>
+
+                        <!-- Tombol untuk menghapus data anggota, dengan konfirmasi terlebih dahulu -->
+                        <a onclick="return confirm('Apakah yakin data akan di hapus?')" href="../controllers/c_user.php?id=<?= $data['id_polisi'] ?>&aksi=hapus"><button type="button" name="hapus" class="btn btn-round btn-danger">Hapus</button></a>
+                    </center>
+                </td>
+            </tr>
+        <?php endwhile; ?>
        </tbody>
    </table>
 </div>
-</body>
-</html>
-
-<?php
-$conn->close();
-?>
-
 </body>
 </html>
