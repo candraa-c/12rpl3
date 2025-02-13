@@ -34,8 +34,8 @@
 
    <div class="container mt-4">
    <h2 class="text-center">Tambah Anggota</h2>
-   <!-- Form untuk menambahkan data anggota -->
-   <form method="POST" action="">
+   <!-- form action berfungsi untuk mengarahkan form inputan user ke controllers user -->
+   <form method="POST" action="../controllers/c_user.php?aksi=tambah">
        <div class="mb-3">
            <label for="nama_polisi" class="form-label">Nama Lengkap</label>
            <input type="text" class="form-control" id="nama_polisi" name="nama_polisi" required>
@@ -59,14 +59,15 @@
        <div class="mb-3">
            <label for="jk" class="form-label">Jenis Kelamin</label>
            <select class="form-control" id="jk" name="jk" required>
-               <option value="L">Laki-Laki</option>
-               <option value="P">Perempuan</option>
+               <option value="L">L</option>
+               <option value="P">P</option>
            </select>
        </div>
        <button type="submit" name="submit" class="btn btn-primary">Tambah Anggota</button>
    </form>
 </div>
 
+ 
 <!-- Menyertakan Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
